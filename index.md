@@ -13,9 +13,9 @@ team_ko: 케이페이브
 members:
   - 정상호
 period_start: 2026년 7월 6일(월)
-period_end: 2026년 8월 21일(금)
-period_note: 47일 · 약 7주
-issued: 2026년 8월 21일
+period_end: 2026년 9월 30일(수)
+period_note: 87일 · 약 12주
+issued: 2026년 9월 30일
 repo_url: https://github.com/jsangho/cloud.jsangho.all
 demo_url: https://www.jsangho.cloud
 ---
