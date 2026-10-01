@@ -1,0 +1,60 @@
+{%- comment -%}
+  다크 모드 단추 (2026-10-01). 첫 테마는 `head_custom.html` 이 정한다 — 여기는 바꾸기만 한다.
+  고른 값은 이 브라우저에만 남는다(localStorage). 고른 적이 없으면 운영체제 설정을 계속 따른다.
+
+  🔴 스크립트 안에 `//` 한 줄 주석을 쓰지 않는다 — 테마가 HTML 을 한 줄로 압축하면 주석 뒤의
+  코드가 전부 주석이 되어 단추가 조용히 죽는다. 주석은 `/* */` 로.
+{%- endcomment %}
+<button type="button" class="theme-toggle" id="theme-toggle">다크 모드</button>
+<script>
+  (function () {
+    var btn = document.getElementById('theme-toggle');
+    var root = document.documentElement;
+    var DARK_HREF = '{{ "/assets/css/just-the-docs-dark.css" | relative_url }}';
+
+    function label(theme) {
+      btn.textContent = theme === 'dark' ? '라이트 모드' : '다크 모드';
+      btn.setAttribute('aria-label', theme === 'dark' ? '라이트 모드로 바꾸기' : '다크 모드로 바꾸기');
+    }
+
+    function apply(theme) {
+      var link = document.getElementById('theme-dark-css');
+      if (theme === 'dark') {
+        if (!link) {
+          /* 밝게 열린 페이지에서 처음 다크로 바꿀 때 — 문서 끝에 붙인다(뒤가 이긴다) */
+          link = document.createElement('link');
+          link.rel = 'stylesheet';
+          link.id = 'theme-dark-css';
+          link.href = DARK_HREF;
+          document.head.appendChild(link);
+        }
+        link.disabled = false;
+      } else if (link) {
+        link.disabled = true;
+      }
+      root.setAttribute('data-theme', theme);
+      label(theme);
+    }
+
+    function saved() {
+      try { return localStorage.getItem('kayfabe-theme'); } catch (e) { return null; }
+    }
+
+    label(root.getAttribute('data-theme'));
+
+    btn.addEventListener('click', function () {
+      var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      try { localStorage.setItem('kayfabe-theme', next); } catch (e) {}
+      apply(next);
+    });
+
+    if (window.matchMedia) {
+      var mq = window.matchMedia('(prefers-color-scheme: dark)');
+      var onChange = function (e) {
+        var s = saved();
+        if (s !== 'dark' && s !== 'light') apply(e.matches ? 'dark' : 'light');
+      };
+      if (mq.addEventListener) mq.addEventListener('change', onChange);
+    }
+  })();
+</script>

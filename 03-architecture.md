@@ -3,6 +3,7 @@ layout: report
 title: 시스템 설계
 permalink: /03-architecture/
 chapter: 3
+nav_order: 3
 ---
 
 ## 1) 시스템 구성

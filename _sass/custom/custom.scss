@@ -1,0 +1,436 @@
+// 보고서 고유 스타일. just-the-docs 가 테마를 다 깐 뒤 마지막에 불러들인다.
+//
+// 이전에는 `assets/main.scss` 가 minima 를 import 하고 그 위에 얹는 구조였다.
+// 테마를 옮기면서 그 파일은 지웠고, 테마가 주지 않는 것 — 표지, 장 머리말,
+// 목차 번호, 장 이동 — 만 여기에 남겼다. 본문 타이포·표·코드블록은 테마에 맡긴다.
+
+// ── 토큰 ────────────────────────────────────────────────
+// **CSS 변수로 둔다.** SCSS 변수로 두면 라이트/다크 두 스타일시트에 같은 값이
+// 박혀 버려, 다크로 바꿔도 여기 쓰인 색만 밝은 채로 남는다(이 파일은 두 스킴
+// 양쪽에 컴파일된다). 변수는 `html[data-theme]` 로 갈린다.
+//
+// 값은 제품(`www/DESIGN.md`)의 라이트·다크 토큰을 그대로 가져왔다.
+:root {
+  --kf-ink: #1c1917;
+  --kf-body: #44403c;
+  --kf-muted: #78716c;
+  --kf-hairline: #d2ccc1;
+  --kf-wash: #f4f1ec;
+  --kf-gold: #b75000; // brand-700 — 라이트 표면용 링크 단계
+  --kf-gold-strong: #dd7400; // brand-600
+  --kf-gold-wash: #fef3c6; // brand-100
+}
+
+// 다크는 제품의 근흑색 캔버스 위 근백색 잉크다. 골드는 어두운 표면에서 대비가
+// 넉넉하므로 램프를 내리지 않고 기본 단계(brand-400)를 그대로 쓴다.
+html[data-theme="dark"] {
+  --kf-ink: #fafafa;
+  --kf-body: #d6d3d1;
+  --kf-muted: #78716c;
+  --kf-hairline: #252a31;
+  --kf-wash: #14171c;
+  --kf-gold: #fcbb00;
+  --kf-gold-strong: #ffd236;
+  // 활성 배경은 **표면 계단의 한 칸**(Card Alt)이다. 라이트가 쓰는 brand-100 에
+  // 대응하는 어두운 골드 틴트는 DESIGN.md 에 없고, 지어내면 이 파일만 아는 색이
+  // 하나 생긴다. 활성 신호는 골드 **글자**가 맡는다.
+  --kf-gold-wash: #14171c;
+}
+
+$ink: var(--kf-ink);
+$body: var(--kf-body);
+$muted: var(--kf-muted);
+$hairline: var(--kf-hairline);
+$wash: var(--kf-wash);
+$gold: var(--kf-gold);
+$gold-strong: var(--kf-gold-strong);
+$gold-wash: var(--kf-gold-wash);
+
+$sans:
+  "Pretendard",
+  -apple-system,
+  BlinkMacSystemFont,
+  "Segoe UI",
+  "Apple SD Gothic Neo",
+  "Malgun Gothic",
+  "Noto Sans KR",
+  sans-serif;
+
+// 목차의 `1)` 형식 — list-style 로는 표현할 수 없어 별도 정의한다.
+@counter-style paren-decimal {
+  system: extends decimal;
+  suffix: ") ";
+}
+
+body {
+  font-family: $sans;
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: -0.003em;
+}
+
+// 한글은 어절 단위로만 끊는다. 영문·URL 은 아래에서 따로 푼다.
+.main-content h1,
+.main-content h2,
+.main-content h3,
+.main-content p,
+.main-content li,
+.main-content td {
+  word-break: keep-all;
+}
+
+// ── 사이드바 ────────────────────────────────────────────
+// 활성 장을 골드로 세운다. 9장짜리 문서라 "지금 어디"가 가장 중요한 정보다.
+// 좌상단 제목. 테마는 헤더에 `max-height: 3.75rem` 을 걸어 두는데, 정식 사업명
+// (60자 넘는다)이 들어가면 여섯 줄로 접히면서 **아래 내비를 덮는다** — "목차" 가
+// 가려졌다(2026-10-01 실측). 그래서 `_includes/title.html` 이 짧은 이름을 쓰고,
+// 여기서 넘침도 함께 막는다. 둘 중 하나만으로는 제목이 길어지는 날 또 깨진다.
+.site-title {
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0.1rem;
+  overflow: hidden;
+  letter-spacing: -0.02em;
+  word-break: keep-all;
+}
+
+.site-mark {
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: $ink;
+}
+
+// 프로젝트명만으로는 무엇에 대한 문서인지 알 수 없다. 축약 제목을 한 줄 덧붙이되
+// 헤더 높이 안에 들어가는 크기로 둔다.
+.site-mark-sub {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  line-height: 1.25;
+  color: $muted;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.nav-list .nav-list-item .nav-list-link {
+  &:hover {
+    background-image: none;
+    background-color: $gold-wash;
+  }
+
+  &.active {
+    background-image: none;
+    background-color: $gold-wash;
+    color: $gold;
+    font-weight: 600;
+  }
+}
+
+// ── 표지 ────────────────────────────────────────────────
+// 사이드바 안에 들어가므로 전체 화면 높이를 쓰지 않는다. 가운데 열에서만 선다.
+.cover {
+  padding: 2rem 0 4rem;
+}
+
+.cover__eyebrow {
+  margin: 0 0 1.25rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  color: $muted;
+}
+
+// 국문 사업명이 길다. 어절 단위로만 줄바꿈되도록 keep-all 을 준다.
+.cover__title {
+  margin: 0;
+  font-size: clamp(1.5rem, 3.4vw, 2rem);
+  font-weight: 700;
+  line-height: 1.34;
+  letter-spacing: -0.03em;
+  word-break: keep-all;
+  color: $ink;
+
+  span {
+    display: block;
+  }
+}
+
+.cover__title-en {
+  margin: 1.1rem 0 0;
+  font-size: clamp(0.875rem, 2vw, 1rem);
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+  color: $muted;
+}
+
+.cover__rule {
+  width: 3.5rem;
+  height: 3px;
+  margin: 2rem 0 2.5rem;
+  background: $gold-strong;
+}
+
+.cover__meta {
+  margin: 0;
+  display: grid;
+  grid-template-columns: 5.5rem 1fr;
+  gap: 0.9rem 1.5rem;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+
+  dt {
+    margin: 0;
+    font-weight: 600;
+    color: $muted;
+  }
+
+  dd {
+    margin: 0;
+    word-break: keep-all;
+    color: $body;
+  }
+}
+
+.cover__aside {
+  display: inline-block;
+  margin-left: 0.4rem;
+  font-size: 0.8125rem;
+  color: $muted;
+  white-space: nowrap;
+}
+
+// 표지 메타의 주소 링크. dd 의 keep-all 이 걸려 있어 긴 URL 이 넘칠 수 있으므로 따로 푼다.
+.cover__link,
+.cover__link:visited {
+  color: $body;
+  text-decoration: none;
+  border-bottom: 1px solid $hairline;
+  overflow-wrap: anywhere;
+  word-break: normal;
+  background-image: none;
+
+  &:hover {
+    color: $gold;
+    border-bottom-color: currentColor;
+  }
+}
+
+.cover__cta {
+  display: inline-block;
+  margin-top: 3rem;
+  padding-bottom: 0.2rem;
+  border-bottom: 1px solid currentColor;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: $gold;
+  text-decoration: none;
+  background-image: none;
+
+  &:hover {
+    color: $gold-strong;
+  }
+}
+
+@media (max-width: 30rem) {
+  .cover__meta {
+    grid-template-columns: 1fr;
+    gap: 0.25rem 0;
+
+    dt {
+      margin-top: 0.9rem;
+    }
+  }
+}
+
+// ── 장 머리말 ───────────────────────────────────────────
+.report__header {
+  padding-bottom: 1.5rem;
+  margin-bottom: 2.25rem;
+  border-bottom: 1px solid $hairline;
+}
+
+.report__eyebrow {
+  margin: 0 0 0.6rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: $gold;
+}
+
+.report__title {
+  margin: 0;
+  font-size: 1.875rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: $ink;
+}
+
+// ── 목차 ────────────────────────────────────────────────
+// 최상위 = 장(1. 2. 3.), 하위 = 절(1) 2) 3))
+.report__body > ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: chapter;
+
+  > li {
+    counter-increment: chapter;
+    padding: 1.2rem 0;
+    margin: 0;
+    border-bottom: 1px solid $hairline;
+
+    &:last-child {
+      border-bottom: 0;
+    }
+
+    > strong {
+      display: block;
+      font-size: 1.0625rem;
+      font-weight: 700;
+      color: $ink;
+      letter-spacing: -0.015em;
+
+      &::before {
+        content: counter(chapter) ".";
+        display: inline-block;
+        min-width: 1.75rem;
+        color: $gold;
+        font-variant-numeric: tabular-nums;
+      }
+    }
+  }
+
+  ol {
+    margin: 0.8rem 0 0 1.75rem;
+    padding: 0;
+    list-style: paren-decimal;
+    color: $body;
+
+    li {
+      margin: 0;
+      padding: 0.25rem 0;
+      font-size: 0.9375rem;
+      line-height: 1.55;
+    }
+
+    li::marker {
+      color: $muted;
+      font-variant-numeric: tabular-nums;
+    }
+  }
+}
+
+.report__body > ol > li > strong a {
+  color: $ink;
+  text-decoration: none;
+  background-image: none;
+
+  &:hover {
+    color: $gold;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+}
+
+// ── 장 이동 ─────────────────────────────────────────────
+.chapter-nav {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-top: 3.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid $hairline;
+  font-size: 0.875rem;
+
+  a {
+    text-decoration: none;
+    background-image: none;
+  }
+}
+
+.chapter-nav__side {
+  flex: 1 1 0;
+  min-width: 0;
+
+  &--right {
+    text-align: right;
+  }
+}
+
+.chapter-nav__label {
+  display: block;
+  margin-bottom: 0.2rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  color: $muted;
+}
+
+.chapter-nav__title {
+  display: block;
+  color: $ink;
+  font-weight: 600;
+  word-break: keep-all;
+
+  a:hover & {
+    color: $gold;
+  }
+}
+
+.chapter-nav__toc {
+  flex: 0 0 auto;
+  align-self: center;
+  padding: 0.4rem 0.9rem;
+  border: 1px solid $hairline;
+  border-radius: 999px;
+  color: $muted;
+
+  &:hover {
+    border-color: $gold;
+    color: $gold;
+  }
+}
+
+@media (max-width: 30rem) {
+  .chapter-nav {
+    flex-wrap: wrap;
+
+    .chapter-nav__toc {
+      order: 3;
+      margin: 0 auto;
+    }
+  }
+}
+
+// 미작성·주석 안내 문구
+.report__body p > em:only-child {
+  display: block;
+  padding: 0.85rem 1rem;
+  border-left: 3px solid $gold-strong;
+  background: $wash;
+  color: $muted;
+  font-size: 0.875rem;
+  font-style: normal;
+  line-height: 1.6;
+}
+
+// ── 다크 모드 단추 ──────────────────────────────────────
+// 상단 보조 영역(aux-nav)에 저장소·데모 링크와 나란히 선다.
+.theme-toggle {
+  padding: 0.2rem 0.6rem;
+  border: 1px solid $hairline;
+  border-radius: 999px;
+  background: none;
+  color: $muted;
+  font-family: inherit;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  cursor: pointer;
+
+  &:hover {
+    border-color: $gold;
+    color: $gold;
+  }
+}

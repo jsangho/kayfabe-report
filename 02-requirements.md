@@ -3,6 +3,7 @@ layout: report
 title: 요구사항 분석
 permalink: /02-requirements/
 chapter: 2
+nav_order: 2
 ---
 
 ## 1) 문제 정의

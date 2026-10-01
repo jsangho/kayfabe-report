@@ -3,6 +3,7 @@ layout: report
 title: 시험 및 검증 결과
 permalink: /08-testing/
 chapter: 8
+nav_order: 8
 ---
 
 이 장의 수치는 **2026-09-30에 직접 돌린 결과**다. 게이트 명령을 그대로 실행하고 출력을 옮겼다.

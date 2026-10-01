@@ -7,6 +7,7 @@ title_break:
   - 검증하는
 title_en: Multi-Agent Prediction of Professional Wrestling Match Outcomes with Evidence-Cited RAG Reports and Per-Agent Accuracy Evaluation
 permalink: /
+nav_exclude: true
 subtitle: 개발 결과 보고서
 team: KayFabe
 team_ko: 케이페이브

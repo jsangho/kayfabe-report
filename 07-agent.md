@@ -3,6 +3,7 @@ layout: report
 title: AI 에이전트 개발
 permalink: /07-agent/
 chapter: 7
+nav_order: 7
 ---
 
 이 장의 수치는 **2026-09-30 운영 데이터베이스 실측값**이다. 화면(`/ai-lab`)이 읽는 것과 같은 API에서 가져왔고, 표본이 작은 구간은 작다고 적었다.

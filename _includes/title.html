@@ -1,0 +1,16 @@
+{%- comment -%}
+  사이드바 좌상단 제목. 테마 기본값(`site.title`)을 덮어쓴다.
+
+  `site.title` 은 **정식 사업명**이라 60자가 넘는다. 표지 대제목으로는 그게 맞지만
+  사이드바에 넣으면 여섯 줄로 접히면서 아래 내비를 덮어 "목차" 가 가려졌다
+  (2026-10-01 실측). 좁은 자리에는 프로젝트명과 축약 제목을 쓴다 — 그러라고
+  `_config.yml` 에 `brand` 와 `title_short` 를 따로 둔 것이다.
+{%- endcomment -%}
+{% if site.logo %}
+  <div class="site-logo" role="img" aria-label="{{ site.title }}"></div>
+{% else %}
+  <span class="site-mark">{{ site.brand | default: site.title_short | default: site.title }}</span>
+  {%- if site.title_short %}
+  <span class="site-mark-sub">{{ site.title_short }}</span>
+  {%- endif %}
+{% endif %}

@@ -3,6 +3,7 @@ layout: report
 title: 예측·랭킹 기능 개발
 permalink: /05-prediction/
 chapter: 5
+nav_order: 5
 ---
 
 ## 1) PLE 이벤트와 라이브

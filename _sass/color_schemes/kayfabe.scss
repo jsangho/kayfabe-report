@@ -1,0 +1,43 @@
+// KAYFABE 색 체계 — 제품(`www/DESIGN.md`)의 라이트 테마 값을 그대로 가져온다.
+//
+// 보고서 4장이 "색은 셋이고 각자 하나의 뜻만 갖는다"고 적어 두었으므로, 그 문서를
+// 담는 사이트가 다른 색을 쓰면 장이 자기 말을 어긴다. 그래서 눈으로 고르지 않고
+// 제품 토큰을 옮겨 왔다.
+//
+// 골드는 **라이트 표면용 단계**를 쓴다. 제품의 기본 골드(brand-400 `#fcbb00`)는
+// 흰 배경에서 대비가 1.8:1 이라 본문 링크로 쓸 수 없다. 그래서 램프를 두 단
+// 내려온 brand-700 `#b75000`(7.0:1)이 링크, brand-600 `#dd7400`이 강조다.
+
+@import "./color_schemes/light";
+
+// ── 제품 토큰 ────────────────────────────────────────────
+$kf-canvas: #e6e2da; // 캔버스 — 사이드바가 쓴다 (본문보다 한 단 어둡게 물러난다)
+$kf-surface-2: #ded9cf; // 구역 — 코드 블록·표 머리
+$kf-card: #fcfbf9; // 카드 — 본문 읽는 면. 순백(#fff)을 쓰지 않는다
+$kf-border: #d2ccc1; // 경계선
+$kf-ink: #1c1917; // 잉크 — 순흑이 아니다
+$kf-muted: #78716c; // 보조 텍스트
+
+$kf-gold-link: #b75000; // brand-700 — 링크
+$kf-gold-strong: #dd7400; // brand-600 — 강조·활성
+$kf-gold-wash: #fef3c6; // brand-100 — 활성 배경 틴트
+$kf-data: #2563eb; // 데이터 축 (라이트 단계)
+
+// ── just-the-docs 매핑 ───────────────────────────────────
+$body-background-color: $kf-card;
+$sidebar-color: $kf-canvas;
+$search-background-color: $kf-card;
+$table-background-color: $kf-card;
+$code-background-color: $kf-surface-2;
+
+$body-text-color: $kf-ink;
+$body-heading-color: $kf-ink;
+$nav-child-link-color: $kf-muted;
+$search-result-preview-color: $kf-muted;
+
+$link-color: $kf-gold-link;
+$btn-primary-color: $kf-gold-strong;
+$base-button-color: $kf-card;
+$border-color: $kf-border;
+
+$feedback-color: $kf-gold-wash;

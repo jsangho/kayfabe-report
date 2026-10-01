@@ -3,6 +3,7 @@ layout: report
 title: 데이터 센터 개발
 permalink: /06-data-center/
 chapter: 6
+nav_order: 6
 ---
 
 이 장의 수치는 **2026-09-30 운영 API 실측값**이다. 화면이 읽는 것과 같은 엔드포인트(`/api/data-center/*`)에서 가져왔다.

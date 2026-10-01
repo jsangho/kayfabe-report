@@ -3,6 +3,7 @@ layout: report
 title: 개발 일정 및 결론
 permalink: /09-conclusion/
 chapter: 9
+nav_order: 9
 ---
 
 ## 1) 단계별 개발 일정

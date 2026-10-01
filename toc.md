@@ -2,6 +2,7 @@
 layout: report
 title: 목차
 permalink: /toc/
+nav_order: 0
 ---
 
 1. **[사업 개요]({{ '/01-overview/' | relative_url }})**
